@@ -1,0 +1,81 @@
+{% extends 'authenticator/base.html' %}
+
+{% block title %}Home Page{% endblock %}
+
+{% block contentz %}
+ <section class="space-y-6">
+  <h2 class="text-2xl font-semibold">Dashboard</h2>
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+    <div class="bg-white shadow p-4 rounded-lg text-center">
+      <p class="text-sm text-gray-500">Total Patients</p>
+      <p class="text-2xl font-bold">{{ total_patients }}</p>
+    </div>
+
+    <div class="bg-white shadow p-4 rounded-lg text-center">
+      <p class="text-sm text-gray-500">Today's Encounters</p>
+      <p class="text-2xl font-bold">{{ todays_encounters }}</p>
+    </div>
+
+    <div class="bg-white shadow p-4 rounded-lg text-center">
+      <p class="text-sm text-gray-500">Total Encounters</p>
+      <p class="text-2xl font-bold">{{ total_encounters }}</p>
+    </div>
+
+    <div class="bg-white shadow p-4 rounded-lg text-center">
+      <p class="text-sm text-gray-500">This Month</p>
+      <p class="text-2xl font-bold">{{ encounters_this_month }}</p>
+    </div>
+  </div>
+</section>
+
+  <section class="mt-10 space-y-4">
+  <h2 class="text-2xl font-semibold">Patients</h2>
+  <a href="/patients/create-patients" class="px-4 py-2 bg-blue-600 text-white rounded inline-block">
+    + Add New Patient
+  </a>
+
+  {% if todays_patients %}
+    <div class="bg-white shadow p-6 rounded-lg">
+      <ul class="divide-y divide-gray-200">
+        {% for patient in todays_patients %}
+          <li class="py-2 flex justify-between items-center">
+            <span class="font-medium">{{ patient }}</span>
+            <span class="text-sm text-gray-500">
+              Registered on {{ todays_patients.created_at|date:"M d, Y" }}
+            </span>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% else %}
+    <div class="bg-white shadow p-6 rounded-lg text-center text-gray-500">
+      No patients found. Get started by adding your first patient.
+    </div>
+  {% endif %}
+</section>
+
+  <section class="mt-10 space-y-4">
+    <h2 class="text-2xl font-semibold">Encounters</h2>
+    <!-- <a href="/encounters/create" class="px-4 py-2 bg-green-600 text-white rounded inline-block">
+      + New Encounter
+    </a> -->
+    {% if todays_encounters_list %}
+    <div class="bg-white shadow p-6 rounded-lg">
+      <ul class="divide-y divide-gray-200">
+        {% for todays_encounter in todays_encounters_list %}
+          <li class="py-2 flex justify-between items-center">
+            <span class="font-medium">{{ todays_encounter }}</span>
+            <span class="text-sm text-gray-500">
+              Registered on {{ todays_encounter.created_at|date:"M d, Y" }}
+            </span>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% else %}
+    <div class="bg-white shadow p-6 rounded-lg text-center text-gray-500">
+      No encounters found. Record your first patient visit.
+    </div>
+  {% endif %}
+  </section>
+{% endblock %}

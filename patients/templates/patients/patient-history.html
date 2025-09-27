@@ -1,0 +1,83 @@
+{% extends "authenticator/base.html" %}
+{% block title %}Patient History{% endblock %}
+
+{% block contentz %}
+<div class="space-y-8">
+  <!-- Patient Info -->
+  <section class="bg-white shadow rounded-lg p-6">
+    <h2 class="text-xl font-semibold mb-4">Patient Information</h2>
+    <p><strong class="font-medium">Name:</strong> {{ patient.name.family }} {{ patient.name.given }}</p>
+    <p><strong class="font-medium">Patient ID:</strong> {{ patient.id }}</p>
+    <p><strong class="font-medium">Date of Birth:</strong> {{ patient.birthDate }}</p>
+    <p><strong class="font-medium">Gender:</strong> {{ patient.gender }}</p>
+    <p><strong class="font-medium">Status:</strong>
+      {% if patient.active %}
+        <span class="text-green-600 font-semibold">Active</span>
+      {% else %}
+        <span class="text-red-600 font-semibold">Inactive</span>
+      {% endif %}
+    </p>
+  </section>
+
+  <!-- Encounter History -->
+  <section>
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="text-lg font-semibold">Encounters</h3>
+      <a href="{% url 'register-encounter' patient.id %}"
+         class="px-3 py-1 bg-blue-600 text-white text-sm rounded shadow hover:bg-blue-700">
+        + Add Encounter
+      </a>
+    </div>
+
+    {% if encounters %}
+      <ul class="space-y-3">
+        {% for encounter in encounters %}
+          <li class="bg-white shadow rounded-lg p-4">
+            <p><strong>Date:</strong> {{ encounter.date }}</p>
+            <p><strong>Reason:</strong> {{ encounter.reason }}</p>
+            <p><strong>Status:</strong> {{ encounter.status }}</p>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="text-gray-500">No encounter history found.</p>
+    {% endif %}
+  </section>
+
+  <!-- Observation History -->
+  <section>
+    <h3 class="text-lg font-semibold mb-3">Observations</h3>
+    {% if observation %}
+      <ul class="space-y-3">
+        {% for obs in observation %}
+          <li class="bg-white shadow rounded-lg p-4">
+            <p><strong>Encounter:</strong> {{ obs.encounter }}</p>
+            <p><strong>Organization:</strong> {{ obs.organization }}</p>
+            <p><strong>Value:</strong> {{ obs.value }} {{ obs.unit }}</p>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="text-gray-500">No observations found.</p>
+    {% endif %}
+  </section>
+
+  <!-- Medication History -->
+  <section>
+    <h3 class="text-lg font-semibold mb-3">Medications</h3>
+    {% if medications %}
+      <ul class="space-y-3">
+        {% for med in medications %}
+          <li class="bg-white shadow rounded-lg p-4">
+            <p><strong>Name:</strong> {{ med.name }}</p>
+            <p><strong>Dose:</strong> {{ med.dose }}</p>
+            <p><strong>Status:</strong> {{ med.status }}</p>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="text-gray-500">No medications found.</p>
+    {% endif %}
+  </section>
+</div>
+{% endblock %}

@@ -1,0 +1,91 @@
+{% extends "authenticator/base.html" %}
+{% block title %}Patient History{% endblock %}
+{% block content %}
+
+<div class="container mt-4">
+    <h2>Patient History</h2>
+
+    <!-- Patient Info -->
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5 class="card-title">{{ patient.name.family }} {{ patient.name.given }}</h5>
+            <p><strong>Patient ID:</strong> {{ patient.id }}</p>
+            <p><strong>Date of Birth:</strong> {{ patient.birthDate }}</p>
+            <p><strong>Gender:</strong> {{ patient.gender }}</p>
+            <p><strong>Status:</strong> {% if patient.active %}Active{% else %}Inactive{% endif %}</p>
+        </div>
+    </div>
+
+    <!-- Encounter History -->
+
+    <div class="d-flex align-items-center mb-2">
+        <h4 class="mb-0 me-3">Encounters</h4>
+       
+    </div>
+
+    {% if encounters %}
+        <ul class="list-group mb-3">
+            {% for encounter in encounters %}
+                <li class="list-group-item">
+                    <strong>Date:</strong> {{ encounter.date }} <br>
+                    <strong>Reason:</strong> {{ encounter.reason }} <br>
+                    <strong>Status:</strong> {{ encounter.status }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No encounter history found.</p>
+    {% endif %}
+
+       <!-- Condition History -->
+    <h4>Conditions</h4>
+    {% if condition %}
+        <ul class="list-group mb-3">
+            {% for cond in conditions %}
+                <li class="list-group-item">
+                    <strong>Name:</strong> {{ cond.category }} <br>
+                    <strong>Dose:</strong> {{ cond.recordedDate }} <br>
+                    <strong>Status:</strong> {{ cond.recorder }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No conditions found.</p>
+    {% endif %}
+
+    <!-- Observation History -->
+    <h4>Observation</h4>
+    {% if observation %}
+        <ul class="list-group mb-3">
+            {% for obs in observation %}
+                <li class="list-group-item">
+                    <strong>Encounter:</strong> {{ obs.encounter }} <br>
+                    <strong>Organization:</strong> {{ obs.organization }} <br>
+                    <strong>value:</strong> {{ obs.value }} <br>
+                    <strong>unit:</strong> {{ obs.unit }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No Observation found.</p>
+    {% endif %}
+
+    <!-- Medication History -->
+    <h4>Medications</h4>
+    {% if medications %}
+        <ul class="list-group mb-3">
+            {% for med in medications %}
+                <li class="list-group-item">
+                    <strong>Name:</strong> {{ med.name }} <br>
+                    <strong>Dose:</strong> {{ med.dose }} <br>
+                    <strong>Status:</strong> {{ med.status }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No medications found.</p>
+    {% endif %}
+
+</div>
+
+{% endblock %}
